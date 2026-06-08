@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ShopKart</title>
+    <link rel="stylesheet" href="../css/register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span>ShopKart</span>
+            </a>
+            <h2>Create Account</h2>
+            <p>Join ShopKart today</p>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <form id="registerForm" class="auth-form">
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+
+            <!-- PHONE -->
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" id="phone" placeholder="Enter your phone" required>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Create password" required>
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+            </div>
+
+            <!-- BUTTON -->
+            <button type="button" class="btn-primary btn-block" onclick="register()">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+
+            <p class="auth-switch">
+                Already have an account? <a href="login.html">Login here</a>
+            </p>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <span id="toastMessage"></span>
+</div>
+
+<!-- JS -->
+<script src="../js/register.js"></script>
+
+</body>
+</html>

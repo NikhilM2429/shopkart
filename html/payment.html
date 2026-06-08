@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment - ShopKart</title>
+  <link rel="stylesheet" href="../css/payment.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+  <nav class="navbar">
+  <div class="nav-inner">
+    <a href="../html/index.html" class="logo">
+      <div class="logo-icon"><i class="ti ti-shopping-bag"></i></div>
+      <span class="logo-text">Shop<span>Kart</span></span>
+    </a>
+
+    <div class="nav-actions">
+      <a href="../html/index.html" class="nav-btn">
+        <i class="ti ti-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="../html/checkout.html" class="nav-btn">
+        <i class="ti ti-shopping-cart"></i>
+        <span>Checkout</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+  <div class="payment-page">
+    <div class="payment-container">
+      <div class="payment-left">
+        <h2>Select Payment Method</h2>
+
+        <div class="payment-option">
+          <input type="radio" name="payment" id="cod" value="cod" checked>
+          <label for="cod">
+            <i class="ti ti-truck-delivery"></i>
+            <div>
+              <span>Cash on Delivery</span>
+              <p>Pay when your order is delivered.</p>
+            </div>
+          </label>
+        </div>
+
+        <div class="payment-option">
+          <input type="radio" name="payment" id="upi" value="upi">
+          <label for="upi">
+            <i class="ti ti-qrcode"></i>
+            <div>
+              <span>UPI</span>
+              <p>Pay using Google Pay, PhonePe, Paytm, or any UPI app.</p>
+            </div>
+          </label>
+        </div>
+
+        <div class="payment-option">
+          <input type="radio" name="payment" id="card" value="card">
+          <label for="card">
+            <i class="ti ti-credit-card"></i>
+            <div>
+              <span>Card Payment</span>
+              <p>Pay with debit or credit card.</p>
+            </div>
+          </label>
+        </div>
+
+        <div class="payment-option">
+          <input type="radio" name="payment" id="netbanking" value="netbanking">
+          <label for="netbanking">
+            <i class="ti ti-building-bank"></i>
+            <div>
+              <span>Net Banking</span>
+              <p>Pay directly from your bank account.</p>
+            </div>
+          </label>
+        </div>
+
+        <div id="confirmationBox" class="confirmation-overlay" style="display:none;">
+  <div class="confirmation-modal">
+    <i class="ti ti-circle-check"></i>
+    <h3>Payment Confirmed</h3>
+    <p id="confirmationText"></p>
+    <p id="confirmationOrderId"></p>
+    <p id="confirmationMethod"></p>
+    <p id="confirmationTotal"></p>
+  </div>
+</div>
+
+        <button type="button" class="pay-btn" onclick="confirmPayment()">
+          Confirm Payment
+        </button>
+      </div>
+
+      <div class="payment-right">
+        <h2>Order Summary</h2>
+        <div class="summary-box">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="subtotalPrice">₹0</span>
+          </div>
+          <div class="summary-row">
+            <span>Delivery</span>
+            <span id="shippingPrice">₹0</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax</span>
+            <span id="taxPrice">₹0</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span id="totalPrice">₹0</span>
+          </div>
+        </div>
+
+        <div class="delivery-box">
+          <h3>Delivery Information</h3>
+          <p id="deliveryInfo">No delivery details loaded</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </div>
+  <div id="confirmationBox" class="confirmation-box" style="display:none;">
+  <i class="ti ti-circle-check"></i>
+  <h3>Payment Confirmed</h3>
+  <p id="confirmationText">Your order has been placed successfully.</p>
+  <p id="confirmationOrderId"></p>
+</div>
+
+  <script src="../js/payment.js"></script>
+</body>
+</html>

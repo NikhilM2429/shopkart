@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - ShopKart</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span>ShopKart</span>
+            </a>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for products, brands and more">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="nav-links">
+                <a href="login.html" class="login-btn" id="loginLink">
+                    <i class="fas fa-user"></i> Login
+                </a>
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i><span>Home</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-heart"></i><span>Wishlist</span>
+                </a>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="mobile-nav-item">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="cart.html" class="mobile-nav-item">
+            <i class="fas fa-shopping-cart"></i> Cart
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <i class="fas fa-heart"></i> Wishlist
+        </a>
+        <a href="login.html" class="mobile-nav-item" id="mobileLoginLink">
+            <i class="fas fa-user"></i> Login
+        </a>
+    </div>
+    
+    <div class="container product-container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb" id="breadcrumb">
+            <a href="index.html">Home</a> <span>/</span> 
+            <a href="index.html">Electronics</a> <span>/</span> 
+            <span id="breadcrumbTitle">Loading...</span>
+        </div>
+        
+        <!-- Product Category Badge -->
+        <div class="product-category-badge" id="productCategoryBadge">
+            <i class="fas fa-tag"></i>
+            <span id="categoryName">Electronics</span>
+        </div>
+        
+        <!-- Product Detail Section -->
+        <div class="product-detail" id="productDetail">
+            <!-- Product loaded dynamically -->
+        </div>
+        
+        <!-- Why Buy From Us Section -->
+        <div class="why-buy-section">
+            <h2 class="section-title"><i class="fas fa-check-circle"></i> Why Buy From ShopKart?</h2>
+            <div class="why-buy-grid">
+                <div class="why-buy-item">
+                    <div class="why-buy-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Authorized Retailer</h3>
+                    <p>100% genuine products with manufacturer warranty</p>
+                </div>
+                <div class="why-buy-item">
+                    <div class="why-buy-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Fast Delivery</h3>
+                    <p>Free delivery within 2-3 business days</p>
+                </div>
+                <div class="why-buy-item">
+                    <div class="why-buy-icon">
+                        <i class="fas fa-undo"></i>
+                    </div>
+                    <h3>Easy Returns</h3>
+                    <p>7-day no questions asked return policy</p>
+                </div>
+                <div class="why-buy-item">
+                    <div class="why-buy-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Dedicated customer support team</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Tabs -->
+        <div class="product-tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="description">
+                    <i class="fas fa-align-left"></i> Description
+                </button>
+                <button class="tab-btn" data-tab="specifications">
+                    <i class="fas fa-list"></i> Specifications
+                </button>
+                <button class="tab-btn" data-tab="reviews">
+                    <i class="fas fa-star"></i> Reviews (<span id="reviewCount">0</span>)
+                </button>
+                <button class="tab-btn" data-tab="questions">
+                    <i class="fas fa-question-circle"></i> Q&A (<span id="qaCount">0</span>)
+                </button>
+                <button class="tab-btn" data-tab="shipping">
+                    <i class="fas fa-truck"></i> Shipping & Returns
+                </button>
+            </div>
+            
+            <div class="tab-content">
+                <!-- Description Tab -->
+                <div class="tab-pane active" id="description">
+                    <div class="tab-pane-content" id="descriptionContent"></div>
+                </div>
+                
+                <!-- Specifications Tab -->
+                <div class="tab-pane" id="specifications">
+                    <div class="tab-pane-content">
+                        <div class="specifications-grid">
+                            <div class="spec-section">
+                                <h3><i class="fas fa-box"></i> General</h3>
+                                <table class="specifications-table" id="generalSpecs"></table>
+                            </div>
+                            <div class="spec-section">
+                                <h3><i class="fas fa-cog"></i> Technical Specifications</h3>
+                                <table class="specifications-table" id="technicalSpecs"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reviews Tab -->
+                <div class="tab-pane" id="reviews">
+                    <div class="tab-pane-content">
+                        <div class="reviews-header">
+                            <div class="reviews-summary">
+                                <div class="review-overview">
+                                    <div class="overall-rating">
+                                        <div class="rating-number" id="overallRating">4.5</div>
+                                        <div class="rating-stars" id="overallStars">★★★★★</div>
+                                        <div class="rating-text" id="ratingText">Excellent</div>
+                                    </div>
+                                    <div class="total-reviews">
+                                        <span id="totalReviews">0</span> ratings & reviews
+                                    </div>
+                                </div>
+                                
+                                <div class="rating-breakdown">
+                                    <div class="rating-bar">
+                                        <span>5 ★</span>
+                                        <div class="bar-container">
+                                            <div class="bar-fill" style="width: 70%"></div>
+                                        </div>
+                                        <span class="bar-count">70%</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>4 ★</span>
+                                        <div class="bar-container">
+                                            <div class="bar-fill" style="width: 20%"></div>
+                                        </div>
+                                        <span class="bar-count">20%</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>3 ★</span>
+                                        <div class="bar-container">
+                                            <div class="bar-fill" style="width: 6%"></div>
+                                        </div>
+                                        <span class="bar-count">6%</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>2 ★</span>
+                                        <div class="bar-container">
+                                            <div class="bar-fill" style="width: 2%"></div>
+                                        </div>
+                                        <span class="bar-count">2%</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span>1 ★</span>
+                                        <div class="bar-container">
+                                            <div class="bar-fill" style="width: 2%"></div>
+                                        </div>
+                                        <span class="bar-count">2%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Write Review Button -->
+                            <button class="btn-primary write-review-btn" id="writeReviewBtn">
+                                <i class="fas fa-pen"></i> Write a Review
+                            </button>
+                        </div>
+                        
+                        <div class="reviews-filters">
+                            <span>Filter by:</span>
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="5">5 ★</button>
+                            <button class="filter-btn" data-filter="4">4 ★</button>
+                            <button class="filter-btn" data-filter="3">3 ★</button>
+                            <button class="filter-btn" data-filter="positive">Positive</button>
+                            <button class="filter-btn" data-filter="critical">Critical</button>
+                        </div>
+                        
+                        <div class="reviews-list" id="reviewsList"></div>
+                        
+                        <button class="btn-secondary btn-block" id="loadMoreReviews">
+                            Load More Reviews
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Q&A Tab -->
+                <div class="tab-pane" id="questions">
+                    <div class="tab-pane-content">
+                        <div class="qa-header">
+                            <h3>Questions & Answers</h3>
+                            <button class="btn-primary ask-question-btn" id="askQuestionBtn">
+                                <i class="fas fa-plus"></i> Ask a Question
+                            </button>
+                        </div>
+                        
+                        <div class="qa-list" id="qaList">
+                            <div class="qa-item">
+                                <div class="qa-question">
+                                    <i class="fas fa-question"></i>
+                                    <span class="question-text">Is this product compatible with iOS?</span>
+                                </div>
+                                <div class="qa-answer">
+                                    <i class="fas fa-answer"></i>
+                                    <span class="answer-text">Yes, this product is fully compatible with iOS devices including iPhone and iPad.</span>
+                                    <span class="answer-author">- ShopKart Team</span>
+                                </div>
+                            </div>
+                            <div class="qa-item">
+                                <div class="qa-question">
+                                    <i class="fas fa-question"></i>
+                                    <span class="question-text">What is the warranty period?</span>
+                                </div>
+                                <div class="qa-answer">
+                                    <i class="fas fa-answer"></i>
+                                    <span class="answer-text">This product comes with 1 year manufacturer warranty covering manufacturing defects.</span>
+                                    <span class="answer-author">- ShopKart Team</span>
+                                </div>
+                            </div>
+                            <div class="qa-item">
+                                <div class="qa-question">
+                                    <i class="fas fa-question"></i>
+                                    <span class="question-text">Does it come with a charger in the box?</span>
+                                </div>
+                                <div class="qa-answer">
+                                    <i class="fas fa-answer"></i>
+                                    <span class="answer-text">Yes, the box includes a fast charger, USB cable, and user manual.</span>
+                                    <span class="answer-author">- ShopKart Team</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shipping Tab -->
+                <div class="tab-pane" id="shipping">
+                    <div class="tab-pane-content">
+                        <div class="shipping-info">
+                            <div class="shipping-item">
+                                <div class="shipping-icon">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div>
+                                    <h4>Free Delivery</h4>
+                                    <p>Free delivery on orders above ₹500</p>
+                                    <span class="delivery-time">📅 Deliver by <strong>June 6-7, 2026</strong></span>
+                                </div>
+                            </div>
+                            <div class="shipping-item">
+                                <div class="shipping-icon">
+                                    <i class="fas fa-shipping-fast"></i>
+                                </div>
+                                <div>
+                                    <h4>Express Delivery</h4>
+                                    <p>Get it by tomorrow for ₹99</p>
+                                    <span class="delivery-time">📅 Deliver by <strong>June 4, 2026</strong></span>
+                                </div>
+                            </div>
+                            <div class="shipping-item">
+                                <div class="shipping-icon">
+                                    <i class="fas fa-undo"></i>
+                                </div>
+                                <div>
+                                    <h4>7 Days Return</h4>
+                                    <p>Easy return policy on all products</p>
+                                </div>
+                            </div>
+                            <div class="shipping-item">
+                                <div class="shipping-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div>
+                                    <h4>1 Year Warranty</h4>
+                                    <p>Manufacturer warranty included</p>
+                                </div>
+                            </div>
+                            <div class="shipping-item">
+                                <div class="shipping-icon">
+                                    <i class="fas fa-cash-on-delivery"></i>
+                                </div>
+                                <div>
+                                    <h4>Cash on Delivery</h4>
+                                    <p>Pay at your convenience</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Enter PIN Code Checker -->
+                        <div class="pincode-checker">
+                            <h3>Check Delivery to your location</h3>
+                            <div class="pincode-form">
+                                <input type="text" placeholder="Enter PIN Code" maxlength="6" id="pincodeInput">
+                                <button class="btn-primary" id="checkPincodeBtn">
+                                    <i class="fas fa-search"></i> Check
+                                </button>
+                            </div>
+                            <div class="pincode-result" id="pincodeResult"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Products -->
+        <div class="related-products">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-th-large"></i> Related Products
+                </h2>
+                <a href="index.html" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="products-grid" id="relatedProductsGrid"></div>
+        </div>
+        
+        <!-- You May Also Like -->
+        <div class="related-products">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-lightbulb"></i> You May Also Like
+                </h2>
+                <a href="index.html" class="view-all-link">
+                    View All <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="products-grid" id="suggestedProductsGrid"></div>
+        </div>
+        
+        <!-- Recently Viewed -->
+        <div class="related-products">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i> Recently Viewed
+                </h2>
+                <a href="#" class="view-all-link" id="clearHistory">
+                    Clear History
+                </a>
+            </div>
+            <div class="products-grid" id="recentlyViewedGrid"></div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>About ShopKart</h3>
+                    <p>Your trusted online shopping destination for Electronics, Fashion, Home & more.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Bhopal, Madhya Pradesh, India</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-envelope"></i> support@shopkart.com</li>
+                        <li><i class="fas fa-clock"></i> Mon - Sat: 9 AM - 9 PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ShopKart. All rights reserved.</p>
+                <div class="payment-methods">
+                    <span>We Accept:</span>
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-google-pay"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Message</span>
+    </div>
+    
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/product.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
