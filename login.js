@@ -41,7 +41,7 @@ function login() {
 
       // 🔥 REDIRECT TO HOME (FIXED PATH)
       console.log("Redirecting to home...");
-      window.location.href = "../html/index.html";
+      window.location.href = "index.html";
     } else {
       alert(data.message || "Login failed");
     }
