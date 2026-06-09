@@ -15,7 +15,7 @@ function register() {
     return;
   }
 
-  fetch("http://localhost:5000/api/users/register", {
+  fetch("http://localhttps://appealing-spirit-production-8f7f.up.railway.app/api/users/registerhost:5000/api/users/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

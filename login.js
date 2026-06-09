@@ -12,7 +12,7 @@ function login() {
   console.log("Sending Login Request...");
   console.log("Email:", email);
 
-  fetch("http://localhost:5000/api/users/login", {
+  fetch("https://appealing-spirit-production-8f7f.up.railway.app/api/users/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

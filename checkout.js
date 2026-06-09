@@ -28,7 +28,7 @@ function showEmptyCart() {
       <i class="ti ti-shopping-cart-off"></i>
       <h2>Your cart is empty</h2>
       <p>Add products before checkout</p>
-      <a href="../html/index.html" class="continue-shopping">
+      <a href="index.html" class="continue-shopping">
         ← Continue Shopping
       </a>
     </div>
@@ -150,7 +150,7 @@ function placeOrder() {
     showToast("Order placed successfully!");
 
     setTimeout(() => {
-      window.location.href = "../html/payment.html";
+      window.location.href = "payment.html";
     }, 1200);
   } catch (error) {
     console.error("localStorage save failed:", error);

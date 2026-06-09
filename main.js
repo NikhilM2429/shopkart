@@ -336,7 +336,7 @@ function goToCheckout() {
   closeCart();
   
   setTimeout(() => {
-    window.location.href = '../html/checkout.html';
+    window.location.href = 'checkout.html';
   }, 300);
 }
 
