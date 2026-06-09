@@ -65,7 +65,7 @@ function renderCartItems() {
                 <i class="ti ti-shopping-cart-off"></i>
                 <div class="cart-empty-title">Your cart is empty</div>
                 <div class="cart-empty-text">Add products to get started</div>
-                <a href="../html/index.html" class="cart-empty-btn" onclick="closeCart()">
+                <a href="index.html" class="cart-empty-btn" onclick="closeCart()">
                     Continue Shopping
                 </a>
             </div>

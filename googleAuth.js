@@ -27,7 +27,7 @@ function googleLogin() {
 
       alert("Google Login Successful");
 
-      window.location.href = "../html/index.html";
+      window.location.href = "index.html";
     })
     .catch((error) => {
       console.error(error);

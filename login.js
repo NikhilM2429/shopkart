@@ -122,7 +122,7 @@ if (data.token) {
   const userData = JSON.parse(jsonPayload);
   localStorage.setItem("user", JSON.stringify(userData));
   
-  window.location.href = "../html/index.html";
+  window.location.href = "index.html";
 }
 console.log("EMAIL RECEIVED:", email);
 

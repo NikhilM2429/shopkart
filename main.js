@@ -1,10 +1,3 @@
-// ===================================
-// SHOPKART - MAIN JAVASCRIPT
-// ===================================
-
-// ===================================
-// DATA
-// ===================================
 const PRODUCTS = [
   {id:1,  name:'iPhone 17 Pro Max 256GB',      cat:'electronics', price:89999,  orig:164900, rating:4.8, reviews:2341,  emoji:'📱', disc:45},
   {id:2,  name:'Samsung Galaxy S24 Ultra',      cat:'electronics', price:79999,  orig:134999, rating:4.7, reviews:1876,  emoji:'📲', disc:41},

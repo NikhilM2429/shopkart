@@ -85,7 +85,7 @@ function updateNavbarLogin() {
       console.log('Could not decode token');
       loginBtn.innerHTML = '<i class="ti ti-user"></i> Login';
       loginBtn.classList.add('btn-login');
-      loginBtn.href = '../html/login.html';
+      loginBtn.href = 'login.html';
       loginBtn.onclick = null;
     }
   }
@@ -93,7 +93,7 @@ function updateNavbarLogin() {
     console.log('Showing: Login');
     loginBtn.innerHTML = '<i class="ti ti-user"></i> Login';
     loginBtn.classList.add('btn-login');
-    loginBtn.href = '../html/login.html';
+    loginBtn.href = 'login.html';
     loginBtn.style.cursor = 'pointer';
     loginBtn.onclick = null;
   }
@@ -138,7 +138,7 @@ function updateNavbarLogin() {
     };
   } else {
     loginBtn.innerHTML = `<i class="ti ti-user"></i> Login`;
-    loginBtn.href = '../html/login.html';
+    loginBtn.href = 'login.html';
     loginBtn.onclick = null;
   }
 }
