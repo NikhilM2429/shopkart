@@ -1,7 +1,15 @@
+/* =========================
+   GLOBAL VARIABLES
+========================= */
+
 let cart = [];
 let customer = {};
 let totals = {};
 let paymentMethod = '';
+
+/* =========================
+   LOAD DATA FROM STORAGE
+========================= */
 
 function loadCheckoutData() {
   const checkoutData = JSON.parse(localStorage.getItem('checkoutData') || '{}');
@@ -11,6 +19,10 @@ function loadCheckoutData() {
   totals = checkoutData.totals || {};
   paymentMethod = localStorage.getItem('selectedPaymentMethod') || '';
 }
+
+/* =========================
+   INIT PAGE
+========================= */
 
 document.addEventListener('DOMContentLoaded', function () {
   loadCheckoutData();
@@ -22,7 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
   if (confirmBtn) {
     confirmBtn.addEventListener('click', confirmPayment);
   }
+
+  setupConfirmationClose();
 });
+
+/* =========================
+   ORDER SUMMARY
+========================= */
 
 function renderSummary() {
   let subtotal = totals.subtotal;
@@ -37,20 +55,18 @@ function renderSummary() {
     total = subtotal + shipping + tax;
   }
 
-  const subtotalEl = document.getElementById('subtotalPrice');
-  const shippingEl = document.getElementById('shippingPrice');
-  const taxEl = document.getElementById('taxPrice');
-  const totalEl = document.getElementById('totalPrice');
-
-  if (subtotalEl) subtotalEl.textContent = '₹' + subtotal.toLocaleString();
-  if (shippingEl) shippingEl.textContent = shipping === 0 ? 'FREE' : '₹' + shipping;
-  if (taxEl) taxEl.textContent = '₹' + tax.toLocaleString();
-  if (totalEl) totalEl.textContent = '₹' + total.toLocaleString();
+  document.getElementById('subtotalPrice').textContent = '₹' + subtotal.toLocaleString();
+  document.getElementById('shippingPrice').textContent = shipping === 0 ? 'FREE' : '₹' + shipping;
+  document.getElementById('taxPrice').textContent = '₹' + tax.toLocaleString();
+  document.getElementById('totalPrice').textContent = '₹' + total.toLocaleString();
 }
+
+/* =========================
+   DELIVERY INFO
+========================= */
 
 function renderDeliveryInfo() {
   const infoEl = document.getElementById('deliveryInfo');
-  if (!infoEl) return;
 
   if (!customer.name) {
     infoEl.textContent = 'No delivery details found.';
@@ -59,26 +75,35 @@ function renderDeliveryInfo() {
 
   infoEl.innerHTML = `
     <strong>${customer.name}</strong><br>
-    ${customer.address || ''}, ${customer.city || ''}${customer.state ? ', ' + customer.state : ''} ${customer.pincode ? '- ' + customer.pincode : ''}<br>
+    ${customer.address || ''}, ${customer.city || ''} ${customer.state || ''} ${customer.pincode || ''}<br>
     Phone: ${customer.phone || ''}<br>
     Email: ${customer.email || ''}
   `;
 }
 
+/* =========================
+   PAYMENT METHOD RESTORE
+========================= */
+
 function restorePaymentMethod() {
   if (!paymentMethod) return;
+
   const radio = document.querySelector(`input[name="payment"][value="${paymentMethod}"]`);
   if (radio) radio.checked = true;
 }
 
+/* =========================
+   CONFIRM PAYMENT (COD + ONLINE)
+========================= */
+
 function confirmPayment() {
-  if (!cart.length) {
+  if (!cart || !cart.length) {
     showToast('Cart is empty.', 'error');
     return;
   }
 
   const selected = document.querySelector('input[name="payment"]:checked');
-  paymentMethod = selected ? selected.value : paymentMethod;
+  paymentMethod = selected ? selected.value : '';
 
   if (!paymentMethod) {
     showToast('Please select a payment method.', 'error');
@@ -89,12 +114,13 @@ function confirmPayment() {
   const shipping = totals.shipping ?? (subtotal > 500 ? 0 : 50);
   const tax = totals.tax ?? Math.round(subtotal * 0.18);
   const total = totals.total ?? (subtotal + shipping + tax);
+
   const orderId = 'ORD' + Date.now();
 
   const order = {
     id: orderId,
     items: cart,
-    customer: customer,
+    customer,
     paymentMethod,
     subtotal,
     shipping,
@@ -104,44 +130,119 @@ function confirmPayment() {
     orderDate: new Date().toISOString()
   };
 
+  // SAVE ORDER LOCALLY
   const orders = JSON.parse(localStorage.getItem('orders') || '[]');
   orders.push(order);
+
   localStorage.setItem('orders', JSON.stringify(orders));
   localStorage.setItem('latestOrderId', orderId);
   localStorage.setItem('selectedPaymentMethod', paymentMethod);
 
+  // ONLINE PAYMENT (RAZORPAY)
+  if (paymentMethod === 'upi' || paymentMethod === 'card' || paymentMethod === 'netbanking') {
+    payNow(total, orderId);
+    return;
+  }
+
+  // COD
   showConfirmation(order);
 }
 
-function showConfirmation(order) {
-  const box = document.getElementById('confirmationBox');
-  const text = document.getElementById('confirmationText');
-  const idEl = document.getElementById('confirmationOrderId');
-  const methodEl = document.getElementById('confirmationMethod');
-  const totalEl = document.getElementById('confirmationTotal');
+/* =========================
+   RAZORPAY PAYMENT
+========================= */
 
-  if (box) box.style.display = 'flex';
-  if (text) text.textContent = 'Your payment has been confirmed successfully.';
-  if (idEl) idEl.textContent = 'Order ID: ' + order.id;
-  if (methodEl) methodEl.textContent = 'Payment Method: ' + order.paymentMethod.toUpperCase();
-  if (totalEl) totalEl.textContent = 'Total Paid: ₹' + order.total.toLocaleString();
+async function payNow(amount, orderId) {
+  try {
+    const res = await fetch("https://appealing-spirit-production-8f7f.up.railway.app/api/payment/create-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ amount })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert("Payment failed");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_xxxxx",
+      amount: data.order.amount,
+      currency: data.order.currency,
+      name: "ShopKart",
+      description: "Order Payment",
+      order_id: data.order.id,
+
+      handler: function (response) {
+        alert("Payment Successful 🎉");
+
+        const order = {
+          id: orderId,
+          paymentMethod: paymentMethod,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id,
+          status: "paid"
+        };
+
+        showConfirmation(order);
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+
+  } catch (error) {
+    console.log(error);
+    alert("Payment error");
+  }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  const closeBtn = document.getElementById('closeConfirmationBtn');
+/* =========================
+   CONFIRMATION UI
+========================= */
+
+function showConfirmation(order) {
   const box = document.getElementById('confirmationBox');
 
-  if (closeBtn && box) {
-    closeBtn.addEventListener('click', function () {
-      box.style.display = 'none';
-    });
-  }
+  document.getElementById('confirmationText').textContent =
+    'Your order has been placed successfully.';
 
-  if (box) {
-    box.addEventListener('click', function (e) {
-      if (e.target === box) {
-        box.style.display = 'none';
-      }
-    });
-  }
-});
+  document.getElementById('confirmationOrderId').textContent =
+    'Order ID: ' + order.id;
+
+  document.getElementById('confirmationMethod').textContent =
+    'Payment Method: ' + (order.paymentMethod || 'ONLINE').toUpperCase();
+
+  document.getElementById('confirmationTotal').textContent =
+    order.total ? 'Total Paid: ₹' + order.total : '';
+
+  box.style.display = 'flex';
+}
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function setupConfirmationClose() {
+  const box = document.getElementById('confirmationBox');
+
+  if (!box) return;
+
+  box.addEventListener('click', function (e) {
+    if (e.target === box) {
+      box.style.display = 'none';
+    }
+  });
+}
+
+/* =========================
+   TOAST MESSAGE
+========================= */
+
+function showToast(msg, type) {
+  alert(msg); // simple fallback
+}
