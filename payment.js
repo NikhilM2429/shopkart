@@ -154,7 +154,7 @@ function confirmPayment() {
 
 async function payNow(amount, orderId) {
   try {
-    const res = await fetch("https://appealing-spirit-production-8f7f.up.railway.app/api/payment/create-order", {
+    const res = await fetch("https://appealing-spirit-production-da94.up.railway.app/api/payment/create-order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

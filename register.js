@@ -16,7 +16,7 @@ function register() {
     return;
   }
   
-  fetch("https://appealing-spirit-production-8f7f.up.railway.app/api/users/register", {
+  fetch("https://appealing-spirit-production-da94.up.railway.app/api/users/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
