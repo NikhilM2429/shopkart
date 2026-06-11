@@ -47,38 +47,18 @@
         </div>
 
         <div class="payment-option">
-          <input type="radio" name="payment" id="upi" value="upi">
-          <label for="upi">
-            <i class="ti ti-qrcode"></i>
-            <div>
-              <span>UPI</span>
-              <p>Pay using Google Pay, PhonePe, Paytm, or any UPI app.</p>
-            </div>
-          </label>
-        </div>
-
-        <div class="payment-option">
-          <input type="radio" name="payment" id="card" value="card">
-          <label for="card">
-            <i class="ti ti-credit-card"></i>
-            <div>
-              <span>Card Payment</span>
-              <p>Pay with debit or credit card.</p>
-            </div>
-          </label>
-        </div>
-
-        <div class="payment-option">
-          <input type="radio" name="payment" id="netbanking" value="netbanking">
-          <label for="netbanking">
-            <i class="ti ti-building-bank"></i>
-            <div>
-              <span>Net Banking</span>
-              <p>Pay directly from your bank account.</p>
-            </div>
-          </label>
-        </div>
-
+  <input type="radio" name="payment" id="online" value="online">
+  <label for="online">
+    <i class="ti ti-credit-card"></i>
+    <div>
+      <span>Online Payment</span>
+      <p>
+        Pay securely using UPI, Cards, Net Banking,
+        Wallets and more via Razorpay.
+      </p>
+    </div>
+  </label>
+</div>
         <div id="confirmationBox" class="confirmation-overlay" style="display:none;">
   <div class="confirmation-modal">
     <i class="ti ti-circle-check"></i>
@@ -92,6 +72,7 @@
 
         <button type="button" class="pay-btn" onclick="confirmPayment()">
           Confirm Payment
+          <a href="receipt.html"></a>
         </button>
       </div>
 

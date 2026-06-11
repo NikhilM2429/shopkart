@@ -2,432 +2,572 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="description" content="ShopKart - Your trusted online shopping destination for electronics, fashion, home essentials and more across India">
+  <meta name="theme-color" content="#6c47ff">
   <title>ShopKart</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="responsiv.css">
+
+  <!-- ADDED: only hamburger + mobile-menu styles -->
+  <style>
+    .hamburger-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      color: #374151;
+      font-size: 1.6rem;
+      line-height: 1;
+      margin-left: auto;
+    }
+    .hamburger-btn:hover {
+      background: #f3f0ff;
+      color: #6c47ff;
+    }
+    @media (max-width: 767px) {
+      .hamburger-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #navActions {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 16px;
+        z-index: 99;
+        border-top: 1px solid #f3f4f6;
+      }
+      #navActions.mobile-open {
+        display: flex;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<!-- MAIN WRAPPER -->
 <div class="main-wrapper">
 
-<!-- ANNOUNCEMENT BANNER -->
-<div class="banner">
-  <span>🎉 Grand Sale: Up to 80% Off</span>
-  <span class="sep">|</span>
-  <span>🚚 Free Delivery on Orders ₹500+</span>
-  <span class="sep">|</span>
-  <span>🔄 Hassle-Free 7-Day Returns</span>
-</div>
+  <!-- ANNOUNCEMENT BANNER -->
+  <div class="banner" role="marquee" aria-label="Promotions">
+    <span>🎉 Grand Sale: Up to 80% Off</span>
+    <span class="sep" aria-hidden="true">|</span>
+    <span>🚚 Free Delivery on Orders ₹500+</span>
+    <span class="sep" aria-hidden="true">|</span>
+    <span>🔄 Hassle-Free 7-Day Returns</span>
+  </div>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="nav-inner">
-    <a href="#" class="logo">
-      <div class="logo-icon"><i class="ti ti-shopping-bag"></i></div>
-      <span class="logo-text">Shop<span>Kart</span></span>
-    </a>
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
 
-    <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-label="Toggle menu">
-      <i class="ti ti-menu-2"></i>
-    </button>
-
-    <div class="search-wrap mobile-hidden">
-      <i class="ti ti-search search-icon"></i>
-      <input type="text" placeholder="Search electronics, fashion, home & more..." id="searchInput" aria-label="Search">
-      <button class="search-btn" type="button" aria-label="Search">
-        <i class="ti ti-arrow-right"></i>
-      </button>
-    </div>
-
-    <div class="nav-actions" id="navActions">
-      <a href="#" class="nav-btn">
-        <i class="ti ti-heart"></i>
-        <span class="nav-text">Wishlist</span>
+      <!-- Logo -->
+      <a href="#" class="logo" aria-label="ShopKart home">
+        <div class="logo-icon" aria-hidden="true"><i class="ti ti-shopping-bag"></i></div>
+        <span class="logo-text">Shop<span>Kart</span></span>
       </a>
 
-      <button class="nav-btn" id="cartBtn" type="button" aria-label="View cart">
-        <i class="ti ti-shopping-cart"></i>
-        <span class="nav-text">Cart</span>
-        <span class="cart-badge" id="cartCount">0</span>
+      <!-- Desktop Search (hidden on mobile) -->
+      <div class="search-wrap mobile-hidden" role="search">
+        <i class="ti ti-search search-icon" aria-hidden="true"></i>
+        <input
+          type="search"
+          placeholder="Search electronics, fashion, home & more..."
+          id="searchInput"
+          aria-label="Search products"
+          autocomplete="off"
+        >
+        <button class="search-btn" type="button" aria-label="Submit search">
+          <i class="ti ti-arrow-right" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- ADDED: Hamburger button (mobile only) -->
+      <button
+        class="hamburger-btn"
+        id="hamburgerBtn"
+        type="button"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="navActions"
+      >
+        <i class="ti ti-menu-2" id="hamburgerIcon" aria-hidden="true"></i>
       </button>
 
-      <a href="login.html" class="nav-btn btn-login" id="loginBtn">
-        <i class="ti ti-user"></i>
-        <span class="nav-text">Login</span>
-      </a>
-    </div>
-  </div>
-</nav>
-
-<!-- HERO SECTION -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-eyebrow"><i class="ti ti-bolt"></i> Biggest Sale of 2026</div>
-      <h1>Shop Smarter,<br>Save <em>Bigger.</em></h1>
-      <p class="hero-sub">Discover electronics, fashion, and lifestyle products — all at prices you won't believe.</p>
-      <div class="hero-ctas">
-        <a href="#products" class="btn-primary"><i class="ti ti-shopping-bag"></i> Shop Now</a>
-        <a href="#categories" class="btn-outline"><i class="ti ti-category"></i> Browse Categories</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">2M+</span>
-          <span class="stat-label">Happy Customers</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">50K+</span>
-          <span class="stat-label">Products</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">4.8★</span>
-          <span class="stat-label">Avg Rating</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-visual mobile-hidden">
-      <div class="float-tag float-tag--tl">
-        <div class="float-tag-icon float-tag-icon--green"><i class="ti ti-truck"></i></div>
-        <div>
-          <div class="float-tag-text">Fast Delivery</div>
-          <div class="float-tag-sub">2–3 Days</div>
-        </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-img">📱</div>
-        <div class="hero-card-badge">-45% OFF</div>
-        <div class="hero-card-info">
-          <div>
-            <div class="hero-card-name">iPhone 17 Pro Max</div>
-            <div class="hero-card-prices">
-              <span class="hero-card-price">₹89,999</span>
-              <span class="hero-card-old">₹1,64,900</span>
-            </div>
-          </div>
-          <button class="hero-add-btn" id="heroAddBtn" aria-label="Add to cart"><i class="ti ti-plus"></i></button>
-        </div>
-      </div>
-      <div class="float-tag float-tag--br">
-        <div class="float-tag-icon float-tag-icon--blue"><i class="ti ti-shield-check"></i></div>
-        <div>
-          <div class="float-tag-text">Secure Payment</div>
-          <div class="float-tag-sub">100% Protected</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-inner">
-    <div class="trust-item"><i class="ti ti-truck"></i> Free Shipping ₹500+</div>
-    <div class="trust-item"><i class="ti ti-refresh"></i> 7-Day Easy Returns</div>
-    <div class="trust-item"><i class="ti ti-shield-lock"></i> 100% Secure Checkout</div>
-    <div class="trust-item"><i class="ti ti-headset"></i> 24/7 Customer Support</div>
-    <div class="trust-item"><i class="ti ti-award"></i> 100% Genuine Products</div>
-  </div>
-</div>
-
-<!-- CATEGORIES SECTION -->
-<section class="section" id="categories">
-  <div class="section-head">
-    <h2 class="section-title">Shop by <span>Category</span></h2>
-    <a href="#" class="see-all mobile-hidden">See All <i class="ti ti-arrow-right"></i></a>
-  </div>
-  <div class="cat-grid" data-responsive-grid="true">
-    <a href="#" class="cat-card" data-category="electronics">
-      <div class="cat-icon cat-icon--elec"><i class="ti ti-device-laptop"></i></div>
-      <div class="cat-name">Electronics</div>
-      <div class="cat-sub">Laptops & Mobiles</div>
-    </a>
-    <a href="#" class="cat-card" data-category="fashion">
-      <div class="cat-icon cat-icon--fash"><i class="ti ti-hanger"></i></div>
-      <div class="cat-name">Fashion</div>
-      <div class="cat-sub">Clothing & Shoes</div>
-    </a>
-    <a href="#" class="cat-card" data-category="home">
-      <div class="cat-icon cat-icon--home"><i class="ti ti-sofa"></i></div>
-      <div class="cat-name">Home & Living</div>
-      <div class="cat-sub">Furniture & Decor</div>
-    </a>
-    <a href="#" class="cat-card" data-category="beauty">
-      <div class="cat-icon cat-icon--beau"><i class="ti ti-sparkles"></i></div>
-      <div class="cat-name">Beauty</div>
-      <div class="cat-sub">Skincare & Makeup</div>
-    </a>
-    <a href="#" class="cat-card" data-category="sports">
-      <div class="cat-icon cat-icon--sprt"><i class="ti ti-ball-basketball"></i></div>
-      <div class="cat-name">Sports</div>
-      <div class="cat-sub">Fitness & Outdoor</div>
-    </a>
-    <a href="#" class="cat-card" data-category="books">
-      <div class="cat-icon cat-icon--book"><i class="ti ti-book-2"></i></div>
-      <div class="cat-name">Books</div>
-      <div class="cat-sub">Fiction & More</div>
-    </a>
-    <a href="#" class="cat-card" data-category="toys">
-      <div class="cat-icon cat-icon--toys"><i class="ti ti-puzzle"></i></div>
-      <div class="cat-name">Toys & Games</div>
-      <div class="cat-sub">For All Ages</div>
-    </a>
-    <a href="#" class="cat-card" data-category="grocery">
-      <div class="cat-icon cat-icon--groc"><i class="ti ti-apple"></i></div>
-      <div class="cat-name">Grocery</div>
-      <div class="cat-sub">Fresh & Packaged</div>
-    </a>
-  </div>
-</section>
-
-<!-- PRODUCTS SECTION -->
-<section class="products-bg section" id="products">
-  <div class="section-head">
-    <h2 class="section-title">Featured <span>Products</span></h2>
-  </div>
-  <div class="filter-bar">
-    <div class="filter-chips" id="filterChips">
-      <button class="chip active" data-category="all">All</button>
-      <button class="chip" data-category="electronics">Electronics</button>
-      <button class="chip" data-category="fashion">Fashion</button>
-      <button class="chip" data-category="home">Home</button>
-      <button class="chip" data-category="beauty">Beauty</button>
-      <button class="chip" data-category="sports">Sports</button>
-    </div>
-    <div class="filter-selects mobile-stack">
-      <select id="sortFilter" aria-label="Sort products">
-        <option value="default">Sort By</option>
-        <option value="price-low">Price: Low to High</option>
-        <option value="price-high">Price: High to Low</option>
-        <option value="rating">Highest Rated</option>
-        <option value="name">Name: A to Z</option>
-      </select>
-    </div>
-  </div>
-  <div class="prod-grid" id="productsGrid" data-responsive-grid="true"></div>
-  <div class="load-more-wrap mobile-full-width">
-    <button class="btn-primary" id="loadMoreBtn">
-      <i class="ti ti-plus"></i> Load More Products
-    </button>
-  </div>
-</section>
-
-<!-- DEALS OF THE DAY SECTION -->
-<section class="deals-section">
-  <div class="deals-inner">
-    <div class="deals-text">
-      <div class="eyebrow"><i class="ti ti-bolt"></i> Limited Time Offer</div>
-      <h2>Deals of<br>the Day</h2>
-      <p>Grab these exclusive offers before they're gone. New deals drop every 24 hours!</p>
-      <div class="countdown" id="countdown">
-        <div class="count-block">
-          <div class="count-num" id="countHrs">08</div>
-          <div class="count-label">Hours</div>
-        </div>
-        <div class="count-block">
-          <div class="count-num" id="countMins">34</div>
-          <div class="count-label">Mins</div>
-        </div>
-        <div class="count-block">
-          <div class="count-num" id="countSecs">22</div>
-          <div class="count-label">Secs</div>
-        </div>
-      </div>
-      <button class="btn-primary" id="viewDealsBtn"><i class="ti ti-flame"></i> View All Deals</button>
-    </div>
-    <div class="deals-grid" id="dealsGrid" data-responsive-grid="true"></div>
-  </div>
-</section>
-
-<!-- WHY US SECTION -->
-<section class="section why-section">
-  <div class="section-head section-head--center">
-    <h2 class="section-title">Why Choose <span>ShopKart?</span></h2>
-  </div>
-  <div class="why-grid" data-responsive-grid="true">
-    <div class="why-card">
-      <div class="why-icon"><i class="ti ti-award"></i></div>
-      <h3>100% Genuine Products</h3>
-      <p>Every product verified by our quality assurance team before dispatch.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-icon"><i class="ti ti-truck-delivery"></i></div>
-      <h3>Lightning Fast Delivery</h3>
-      <p>Delivered to your doorstep in 2–3 business days across India.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-icon"><i class="ti ti-tag"></i></div>
-      <h3>Guaranteed Best Prices</h3>
-      <p>Daily deals and price match guarantee on all major categories.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-icon"><i class="ti ti-shield-check"></i></div>
-      <h3>Bank-Grade Security</h3>
-      <p>256-bit SSL encryption protects every transaction on ShopKart.</p>
-    </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER SECTION -->
-<section class="newsletter">
-  <div class="newsletter-inner">
-    <h2>Get Exclusive <span>Deals</span> First</h2>
-    <p>Subscribe and get 10% off your first order, plus early access to sales and new arrivals.</p>
-    <div class="email-form mobile-stack">
-      <input type="email" placeholder="Enter your email address" id="emailInput" aria-label="Email address" required>
-      <button id="subscribeBtn" type="submit">Subscribe</button>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-grid" data-responsive-grid="true">
-      <div class="footer-brand">
-        <a href="#" class="logo">
-          <div class="logo-icon"><i class="ti ti-shopping-bag"></i></div>
-          <span class="logo-text">Shop<span>Kart</span></span>
+      <!-- Nav Actions -->
+      <div class="nav-actions" id="navActions" aria-label="User actions">
+        <a href="#" class="nav-btn" aria-label="Wishlist">
+          <i class="ti ti-heart" aria-hidden="true"></i>
+          <span class="nav-text">Wishlist</span>
         </a>
-        <p>Your trusted online shopping destination for electronics, fashion, home essentials and more across India.</p>
-        <div class="socials">
-          <a href="#" class="social-btn" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
-          <a href="#" class="social-btn" aria-label="Twitter"><i class="ti ti-brand-twitter"></i></a>
-          <a href="#" class="social-btn" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
-          <a href="#" class="social-btn" aria-label="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+
+        <button class="nav-btn" id="cartBtn" type="button" aria-label="View cart, 0 items">
+          <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+          <span class="nav-text">Cart</span>
+          <span class="cart-badge" id="cartCount" aria-live="polite">0</span>
+        </button>
+
+        <!-- Login button (shown when NOT logged in) -->
+        <a href="login.html" class="nav-btn btn-login" id="loginBtn" aria-label="Login">
+          <i class="ti ti-user" aria-hidden="true"></i>
+          <span class="nav-text">Login</span>
+        </a>
+        
+
+        <!-- Logout button (shown when logged in) -->
+        <button class="nav-btn" id="logoutBtn" type="button" aria-label="Logout" style="display: none;">
+          <i class="ti ti-logout" aria-hidden="true"></i>
+          <span class="nav-text">Logout</span>
+        </button>
+      </div>
+
+      <!-- Mobile Search Row (visible only on mobile) -->
+      <div class="mobile-search-row" role="search">
+        <div class="search-wrap">
+          <i class="ti ti-search search-icon" aria-hidden="true"></i>
+          <input
+            type="search"
+            placeholder="Search products..."
+            aria-label="Search products"
+            autocomplete="off"
+          >
+          <button class="search-btn" type="button" aria-label="Submit search">
+            <i class="ti ti-arrow-right" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
-      <div class="footer-col">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">All Products</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Customer Care</h4>
-        <ul>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Track Order</a></li>
-          <li><a href="#">Shipping Info</a></li>
-          <li><a href="#">Returns Policy</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact Us</h4>
-        <div class="contact-item"><i class="ti ti-map-pin"></i><span>Bhopal, Madhya Pradesh, India</span></div>
-        <div class="contact-item"><i class="ti ti-phone"></i><span>+91 98765 43210</span></div>
-        <div class="contact-item"><i class="ti ti-mail"></i><span>support@shopkart.com</span></div>
-        <div class="contact-item"><i class="ti ti-clock"></i><span>Mon – Sat: 9 AM – 9 PM</span></div>
-      </div>
+
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 ShopKart. All rights reserved. Made with ❤️ in India.</p>
-      <div class="payment-icons">
-        <span>We accept:</span>
-        <span class="pay-badge">Visa</span>
-        <span class="pay-badge">Mastercard</span>
-        <span class="pay-badge">UPI</span>
-        <span class="pay-badge">GPay</span>
-        <span class="pay-badge">PayPal</span>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" aria-label="Hero banner">
+    <div class="hero-inner">
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <i class="ti ti-bolt" aria-hidden="true"></i> Biggest Sale of 2026
+        </div>
+        <h1>Shop Smarter,<br>Save <em>Bigger.</em></h1>
+        <p class="hero-sub">
+          Discover electronics, fashion, and lifestyle products — all at prices you won't believe.
+        </p>
+        <div class="hero-ctas">
+          <a href="#products" class="btn-primary">
+            <i class="ti ti-shopping-bag" aria-hidden="true"></i> Shop Now
+          </a>
+          <a href="#categories" class="btn-outline">
+            <i class="ti ti-category" aria-hidden="true"></i> Browse Categories
+          </a>
+        </div>
+        <div class="hero-stats" aria-label="ShopKart statistics">
+          <div class="stat">
+            <span class="stat-num">2M+</span>
+            <span class="stat-label">Happy Customers</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">50K+</span>
+            <span class="stat-label">Products</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">4.8★</span>
+            <span class="stat-label">Avg Rating</span>
+          </div>
+        </div>
       </div>
+
+      <!-- Hero Visual (desktop only) -->
+      <div class="hero-visual mobile-hidden" aria-hidden="true">
+        <div class="float-tag float-tag--tl">
+          <div class="float-tag-icon float-tag-icon--green"><i class="ti ti-truck"></i></div>
+          <div>
+            <div class="float-tag-text">Fast Delivery</div>
+            <div class="float-tag-sub">2–3 Days</div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-img">📱</div>
+          <div class="hero-card-badge">-45% OFF</div>
+          <div class="hero-card-info">
+            <div>
+              <div class="hero-card-name">iPhone 17 Pro Max</div>
+              <div class="hero-card-prices">
+                <span class="hero-card-price">₹89,999</span>
+                <span class="hero-card-old">₹1,64,900</span>
+              </div>
+            </div>
+            <button class="hero-add-btn" id="heroAddBtn" aria-label="Add iPhone 17 Pro Max to cart">
+              <i class="ti ti-plus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="float-tag float-tag--br">
+          <div class="float-tag-icon float-tag-icon--blue"><i class="ti ti-shield-check"></i></div>
+          <div>
+            <div class="float-tag-text">Secure Payment</div>
+            <div class="float-tag-sub">100% Protected</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar" role="list" aria-label="Trust indicators">
+    <div class="trust-inner">
+      <div class="trust-item" role="listitem"><i class="ti ti-truck" aria-hidden="true"></i> Free Shipping ₹500+</div>
+      <div class="trust-item" role="listitem"><i class="ti ti-refresh" aria-hidden="true"></i> 7-Day Easy Returns</div>
+      <div class="trust-item" role="listitem"><i class="ti ti-shield-lock" aria-hidden="true"></i> 100% Secure Checkout</div>
+      <div class="trust-item" role="listitem"><i class="ti ti-headset" aria-hidden="true"></i> 24/7 Customer Support</div>
+      <div class="trust-item" role="listitem"><i class="ti ti-award" aria-hidden="true"></i> 100% Genuine Products</div>
     </div>
   </div>
-</footer>
+
+  <!-- CATEGORIES SECTION -->
+  <section class="section" id="categories" aria-labelledby="cat-heading">
+    <div class="section-head">
+      <h2 class="section-title" id="cat-heading">Shop by <span>Category</span></h2>
+      <a href="#" class="see-all mobile-hidden" aria-label="See all categories">
+        See All <i class="ti ti-arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+    <div class="cat-grid" role="list" aria-label="Product categories">
+      <a href="#" class="cat-card" data-category="electronics" role="listitem">
+        <div class="cat-icon cat-icon--elec" aria-hidden="true"><i class="ti ti-device-laptop"></i></div>
+        <div class="cat-name">Electronics</div>
+        <div class="cat-sub">Laptops &amp; Mobiles</div>
+      </a>
+      <a href="#" class="cat-card" data-category="fashion" role="listitem">
+        <div class="cat-icon cat-icon--fash" aria-hidden="true"><i class="ti ti-hanger"></i></div>
+        <div class="cat-name">Fashion</div>
+        <div class="cat-sub">Clothing &amp; Shoes</div>
+      </a>
+      <a href="#" class="cat-card" data-category="home" role="listitem">
+        <div class="cat-icon cat-icon--home" aria-hidden="true"><i class="ti ti-sofa"></i></div>
+        <div class="cat-name">Home &amp; Living</div>
+        <div class="cat-sub">Furniture &amp; Decor</div>
+      </a>
+      <a href="#" class="cat-card" data-category="beauty" role="listitem">
+        <div class="cat-icon cat-icon--beau" aria-hidden="true"><i class="ti ti-sparkles"></i></div>
+        <div class="cat-name">Beauty</div>
+        <div class="cat-sub">Skincare &amp; Makeup</div>
+      </a>
+      <a href="#" class="cat-card" data-category="sports" role="listitem">
+        <div class="cat-icon cat-icon--sprt" aria-hidden="true"><i class="ti ti-ball-basketball"></i></div>
+        <div class="cat-name">Sports</div>
+        <div class="cat-sub">Fitness &amp; Outdoor</div>
+      </a>
+      <a href="#" class="cat-card" data-category="books" role="listitem">
+        <div class="cat-icon cat-icon--book" aria-hidden="true"><i class="ti ti-book-2"></i></div>
+        <div class="cat-name">Books</div>
+        <div class="cat-sub">Fiction &amp; More</div>
+      </a>
+      <a href="#" class="cat-card" data-category="toys" role="listitem">
+        <div class="cat-icon cat-icon--toys" aria-hidden="true"><i class="ti ti-puzzle"></i></div>
+        <div class="cat-name">Toys &amp; Games</div>
+        <div class="cat-sub">For All Ages</div>
+      </a>
+      <a href="#" class="cat-card" data-category="grocery" role="listitem">
+        <div class="cat-icon cat-icon--groc" aria-hidden="true"><i class="ti ti-apple"></i></div>
+        <div class="cat-name">Grocery</div>
+        <div class="cat-sub">Fresh &amp; Packaged</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- PRODUCTS SECTION -->
+  <section class="products-bg section" id="products" aria-labelledby="prod-heading">
+    <div class="section-head">
+      <h2 class="section-title" id="prod-heading">Featured <span>Products</span></h2>
+    </div>
+
+    <div class="filter-bar" role="toolbar" aria-label="Filter and sort products">
+      <div class="filter-chips" id="filterChips" role="group" aria-label="Filter by category">
+        <button class="chip active" data-category="all" aria-pressed="true">All</button>
+        <button class="chip" data-category="electronics" aria-pressed="false">Electronics</button>
+        <button class="chip" data-category="fashion" aria-pressed="false">Fashion</button>
+        <button class="chip" data-category="home" aria-pressed="false">Home</button>
+        <button class="chip" data-category="beauty" aria-pressed="false">Beauty</button>
+        <button class="chip" data-category="sports" aria-pressed="false">Sports</button>
+      </div>
+      <div class="filter-selects">
+        <select id="sortFilter" aria-label="Sort products">
+          <option value="default">Sort By</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Highest Rated</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="prod-grid" id="productsGrid" role="list" aria-label="Products"></div>
+
+    <div class="load-more-wrap">
+      <button class="btn-primary" id="loadMoreBtn" type="button">
+        <i class="ti ti-plus" aria-hidden="true"></i> Load More Products
+      </button>
+    </div>
+  </section>
+
+  <!-- DEALS OF THE DAY -->
+  <section class="deals-section" aria-labelledby="deals-heading">
+    <div class="deals-inner">
+      <div class="deals-text">
+        <div class="eyebrow">
+          <i class="ti ti-bolt" aria-hidden="true"></i> Limited Time Offer
+        </div>
+        <h2 id="deals-heading">Deals of<br>the Day</h2>
+        <p>Grab these exclusive offers before they're gone. New deals drop every 24 hours!</p>
+        <div class="countdown" id="countdown" aria-label="Time remaining for deals">
+          <div class="count-block">
+            <div class="count-num" id="countHrs" aria-label="Hours">08</div>
+            <div class="count-label">Hours</div>
+          </div>
+          <div class="count-block">
+            <div class="count-num" id="countMins" aria-label="Minutes">34</div>
+            <div class="count-label">Mins</div>
+          </div>
+          <div class="count-block">
+            <div class="count-num" id="countSecs" aria-label="Seconds">22</div>
+            <div class="count-label">Secs</div>
+          </div>
+        </div>
+        <button class="btn-primary" id="viewDealsBtn" type="button">
+          <i class="ti ti-flame" aria-hidden="true"></i> View All Deals
+        </button>
+      </div>
+      <div class="deals-grid" id="dealsGrid" role="list" aria-label="Deal products"></div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="section why-section" aria-labelledby="why-heading">
+    <div class="section-head section-head--center">
+      <h2 class="section-title" id="why-heading">Why Choose <span>ShopKart?</span></h2>
+    </div>
+    <div class="why-grid" role="list">
+      <div class="why-card" role="listitem">
+        <div class="why-icon" aria-hidden="true"><i class="ti ti-award"></i></div>
+        <h3>100% Genuine Products</h3>
+        <p>Every product verified by our quality assurance team before dispatch.</p>
+      </div>
+      <div class="why-card" role="listitem">
+        <div class="why-icon" aria-hidden="true"><i class="ti ti-truck-delivery"></i></div>
+        <h3>Lightning Fast Delivery</h3>
+        <p>Delivered to your doorstep in 2–3 business days across India.</p>
+      </div>
+      <div class="why-card" role="listitem">
+        <div class="why-icon" aria-hidden="true"><i class="ti ti-tag"></i></div>
+        <h3>Guaranteed Best Prices</h3>
+        <p>Daily deals and price match guarantee on all major categories.</p>
+      </div>
+      <div class="why-card" role="listitem">
+        <div class="why-icon" aria-hidden="true"><i class="ti ti-shield-check"></i></div>
+        <h3>Bank-Grade Security</h3>
+        <p>256-bit SSL encryption protects every transaction on ShopKart.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter" aria-labelledby="newsletter-heading">
+    <div class="newsletter-inner">
+      <h2 id="newsletter-heading">Get Exclusive <span>Deals</span> First</h2>
+      <p>Subscribe and get 10% off your first order, plus early access to sales and new arrivals.</p>
+      <div class="email-form" role="form" aria-label="Newsletter subscription">
+        <label for="emailInput" class="visually-hidden">Email address</label>
+        <input
+          type="email"
+          id="emailInput"
+          placeholder="Enter your email address"
+          aria-label="Your email address"
+          autocomplete="email"
+          required
+        >
+        <button id="subscribeBtn" type="submit">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a href="#" class="logo" aria-label="ShopKart home">
+            <div class="logo-icon" aria-hidden="true"><i class="ti ti-shopping-bag"></i></div>
+            <span class="logo-text">Shop<span>Kart</span></span>
+          </a>
+          <p>Your trusted online shopping destination for electronics, fashion, home essentials and more across India.</p>
+          <div class="socials" aria-label="Social media links">
+            <a href="#" class="social-btn" aria-label="Facebook"><i class="ti ti-brand-facebook" aria-hidden="true"></i></a>
+            <a href="#" class="social-btn" aria-label="Twitter"><i class="ti ti-brand-twitter" aria-hidden="true"></i></a>
+            <a href="#" class="social-btn" aria-label="Instagram"><i class="ti ti-brand-instagram" aria-hidden="true"></i></a>
+            <a href="#" class="social-btn" aria-label="LinkedIn"><i class="ti ti-brand-linkedin" aria-hidden="true"></i></a>
+          </div>
+        </div>
+
+        <nav class="footer-col" aria-label="Quick links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">All Products</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </nav>
+
+        <nav class="footer-col" aria-label="Customer care links">
+          <h4>Customer Care</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Track Order</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">Returns Policy</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </nav>
+
+        <address class="footer-col" style="font-style: normal;">
+          <h4>Contact Us</h4>
+          <div class="contact-item">
+            <i class="ti ti-map-pin" aria-hidden="true"></i>
+            <span>Bhopal, Madhya Pradesh, India</span>
+          </div>
+          <div class="contact-item">
+            <i class="ti ti-phone" aria-hidden="true"></i>
+            <a href="tel:+919876543210">+91 98765 43210</a>
+          </div>
+          <div class="contact-item">
+            <i class="ti ti-mail" aria-hidden="true"></i>
+            <a href="mailto:support@shopkart.com">support@shopkart.com</a>
+          </div>
+          <div class="contact-item">
+            <i class="ti ti-clock" aria-hidden="true"></i>
+            <span>Mon – Sat: 9 AM – 9 PM</span>
+          </div>
+        </address>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 ShopKart. All rights reserved. Made with ❤️ in India.</p>
+        <div class="payment-icons" aria-label="Accepted payment methods">
+          <span>We accept:</span>
+          <span class="pay-badge">Visa</span>
+          <span class="pay-badge">Mastercard</span>
+          <span class="pay-badge">UPI</span>
+          <span class="pay-badge">GPay</span>
+          <span class="pay-badge">PayPal</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+</div><!-- /main-wrapper -->
 
 <!-- TOAST NOTIFICATION -->
-<div class="toast" id="toast">
-  <i class="ti ti-check"></i>
+<div class="toast" id="toast" role="alert" aria-live="polite" aria-atomic="true">
+  <i class="ti ti-check" aria-hidden="true"></i>
   <span id="toastMsg">Added to cart!</span>
 </div>
 
 <!-- CART OVERLAY & PANEL -->
-<div class="cart-overlay" id="cartOverlay"></div>
-<div class="cart-panel" id="cartPanel">
+<div class="cart-overlay" id="cartOverlay" aria-hidden="true"></div>
+
+<aside
+  class="cart-panel"
+  id="cartPanel"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Shopping cart"
+  aria-hidden="true"
+>
   <div class="cart-header">
-    <h3><i class="ti ti-shopping-cart"></i> Your Cart</h3>
-    <button class="cart-close" id="cartCloseBtn" aria-label="Close cart"><i class="ti ti-x"></i></button>
+    <h3><i class="ti ti-shopping-cart" aria-hidden="true"></i> Your Cart</h3>
+    <button class="cart-close" id="cartCloseBtn" type="button" aria-label="Close cart">
+      <i class="ti ti-x" aria-hidden="true"></i>
+    </button>
   </div>
+
   <div class="cart-items" id="cartItems">
-    <div class="cart-empty">
-      <i class="ti ti-shopping-cart-off"></i>
+    <div class="cart-empty" role="status">
+      <i class="ti ti-shopping-cart-off" aria-hidden="true"></i>
       <div class="cart-empty-title">Your cart is empty</div>
       <div class="cart-empty-text">Add products to get started</div>
       <a href="index.html" class="cart-empty-btn">Continue Shopping</a>
     </div>
   </div>
+
   <div class="cart-footer">
     <div class="cart-total">
       <span class="cart-total-label">Total Amount</span>
-      <span class="cart-total-price" id="cartTotal">₹0</span>
+      <span class="cart-total-price" id="cartTotal" aria-live="polite">₹0</span>
     </div>
-    <button class="checkout-btn" id="checkoutBtn">
-      <i class="ti ti-lock"></i> Proceed to Checkout
+    <button class="checkout-btn" id="checkoutBtn" type="button">
+      <i class="ti ti-lock" aria-hidden="true"></i> Proceed to Checkout
     </button>
   </div>
-</div>
+</aside>
 
-</div> <!-- End of main-wrapper -->
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
 
-<!-- JAVASCRIPT -->
 <script src="main.js"></script>
 <script src="login.js"></script>
 <script src="auth.js"></script>
 
-<!-- Mobile Menu Script (Add to main.js or inline) -->
+<!-- ADDED: hamburger toggle logic only -->
 <script>
-// Mobile menu toggle functionality
-document.addEventListener('DOMContentLoaded', function() {
-  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-  const navActions = document.getElementById('navActions');
-  
-  if (mobileMenuToggle && navActions) {
-    mobileMenuToggle.addEventListener('click', function() {
-      navActions.classList.toggle('active');
-      mobileMenuToggle.classList.toggle('active');
-      
-      // Toggle icon
-      const icon = mobileMenuToggle.querySelector('i');
-      if (navActions.classList.contains('active')) {
-        icon.classList.replace('ti-menu-2', 'ti-x');
-      } else {
-        icon.classList.replace('ti-x', 'ti-menu-2');
-      }
-    });
-  }
-  
-  // Close mobile menu when clicking on a nav item
-  const navButtons = navActions.querySelectorAll('.nav-btn');
-  navButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
-        navActions.classList.remove('active');
-        mobileMenuToggle.classList.remove('active');
-        const icon = mobileMenuToggle.querySelector('i');
-        icon.classList.replace('ti-x', 'ti-menu-2');
-      }
-    });
+  const hamburgerBtn  = document.getElementById('hamburgerBtn');
+  const navActions    = document.getElementById('navActions');
+  const hamburgerIcon = document.getElementById('hamburgerIcon');
+
+  hamburgerBtn.addEventListener('click', function () {
+    const isOpen = navActions.classList.toggle('mobile-open');
+    hamburgerBtn.setAttribute('aria-expanded', isOpen);
+    hamburgerIcon.className = isOpen ? 'ti ti-x' : 'ti ti-menu-2';
   });
-  
-  // Close mobile menu on resize
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 768) {
-      navActions.classList.remove('active');
-      mobileMenuToggle.classList.remove('active');
-      const icon = mobileMenuToggle.querySelector('i');
-      icon.classList.replace('ti-x', 'ti-menu-2');
-    }
+
+  // Close the dropdown when any link/button inside it is tapped
+  navActions.addEventListener('click', function () {
+    navActions.classList.remove('mobile-open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerIcon.className = 'ti ti-menu-2';
   });
-});
 </script>
 
 </body>

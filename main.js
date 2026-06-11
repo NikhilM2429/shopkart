@@ -7,7 +7,7 @@ const PRODUCTS = [
   {id:6,  name:"Levi's 501 Original Jeans",     cat:'fashion',     price:2999,   orig:5999,   rating:4.5, reviews:1543,  emoji:'👖', disc:50},
   {id:7,  name:'Silk Saree Banarasi',           cat:'fashion',     price:3499,   orig:7499,   rating:4.7, reviews:892,   emoji:'🥻', disc:53},
   {id:8,  name:'Tommy Hilfiger Polo Shirt',     cat:'fashion',     price:1999,   orig:3999,   rating:4.4, reviews:765,   emoji:'👕', disc:50},
-  {id:9,  name:'Bosch Mixer Grinder 750W',      cat:'home',        price:4299,   orig:6499,   rating:4.6, reviews:2109,  emoji:'🥣', disc:34},
+  {id:9,  name:'Bosch Mixer Grinder 750W',     cat:'home',        price:4299,   orig:6499,   rating:4.6, reviews:2109,  emoji:'🥣', disc:34},
   {id:10, name:'Philips Air Fryer XXL',         cat:'home',        price:8499,   orig:12999,  rating:4.7, reviews:1432,  emoji:'🍳', disc:35},
   {id:11, name:'Dyson V15 Detect Vacuum',       cat:'home',        price:44990,  orig:59900,  rating:4.8, reviews:543,   emoji:'🧹', disc:25},
   {id:12, name:'Himalaya Neem Face Wash',       cat:'beauty',      price:149,    orig:249,    rating:4.5, reviews:8765,  emoji:'🧴', disc:40},
@@ -19,12 +19,14 @@ const PRODUCTS = [
   {id:18, name:'Tata Salt 1kg Pack of 5',       cat:'grocery',     price:99,     orig:125,    rating:4.7, reviews:5432,  emoji:'🧂', disc:21},
 ];
 
+
 const DEALS = [
   {id: 'd1', name:'Sony WH-1000XM5 Headphones', price:24990, orig:34990, disc:29, emoji:'🎧'},
   {id: 'd2', name:'Nike Air Max 270', price:4499, orig:8995, disc:50, emoji:'👟'},
   {id: 'd3', name:'Dyson V15 Vacuum', price:44990, orig:59900, disc:25, emoji:'🧹'},
   {id: 'd4', name:'iPad Pro 12.9"', price:79990, orig:102900, disc:22, emoji:'📱'},
 ];
+
 
 // ===================================
 // STATE
@@ -34,6 +36,7 @@ let visibleCount = 8;
 let activeCategory = 'all';
 let activeSort = 'default';
 let toastTimeout;
+
 
 // ===================================
 // INIT
@@ -46,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
   loadCart();
   updateNavbarLogin(); // ✅ Update navbar on login
 });
+
 
 // ===================================
 // EVENTS
@@ -84,6 +88,7 @@ function bindEvents() {
   document.getElementById('subscribeBtn').addEventListener('click', subscribe);
 }
 
+
 // ===================================
 // PRODUCTS
 // ===================================
@@ -99,6 +104,7 @@ function getFilteredProducts() {
   
   return prods;
 }
+
 
 function renderProducts() {
   const grid = document.getElementById('productsGrid');
@@ -148,6 +154,7 @@ function renderProducts() {
   }
 }
 
+
 function filterCategory(cat) {
   activeCategory = cat;
   visibleCount = 8;
@@ -159,6 +166,7 @@ function filterCategory(cat) {
   
   renderProducts();
 }
+
 
 // ===================================
 // DEALS
@@ -180,6 +188,7 @@ function renderDeals() {
   `).join('');
 }
 
+
 function addDealToCart(dealId) {
   const deal = DEALS.find(d => d.id === dealId);
   if (!deal) return;
@@ -196,6 +205,7 @@ function addDealToCart(dealId) {
   showToast(deal.name + ' added to cart!');
 }
 
+
 // ===================================
 // CART
 // ===================================
@@ -207,9 +217,11 @@ function loadCart() {
   }
 }
 
+
 function saveCart() {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
+
 
 function addToCart(id, btn) {
   const prod = PRODUCTS.find(p => p.id === id);
@@ -237,6 +249,7 @@ function addToCart(id, btn) {
   showToast(prod.name.slice(0, 30) + '… added to cart!');
 }
 
+
 function addToCartFromHero() {
   const prod = PRODUCTS[0];
   const existing = cart.find(c => c.id === prod.id);
@@ -251,6 +264,7 @@ function addToCartFromHero() {
   showToast('iPhone 17 Pro Max added to cart!');
 }
 
+
 function changeQty(idx, delta) {
   if (!cart[idx]) return;
   cart[idx].qty = Math.max(1, cart[idx].qty + delta);
@@ -258,11 +272,13 @@ function changeQty(idx, delta) {
   updateCartUI();
 }
 
+
 function removeItem(idx) {
   cart.splice(idx, 1);
   saveCart();
   updateCartUI();
-}
+}    
+
 
 function updateCartUI() {
   const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
@@ -305,11 +321,13 @@ function updateCartUI() {
   `).join('');
 }
 
+
 function openCart() {
   document.getElementById('cartOverlay').classList.add('open');
   document.getElementById('cartPanel').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+
 
 function closeCart() {
   document.getElementById('cartOverlay').classList.remove('open');
@@ -317,21 +335,37 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
+
 function goToCheckout() {
   if (!cart.length) {
     showToast('Your cart is empty! Add products first.');
     return;
   }
-  
+
+  // ✅ Check if user is logged in
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const userToken = localStorage.getItem('userToken');
+
+  if (!isLoggedIn || !userToken) {
+    // User NOT logged in → redirect to login page
+    showToast('Please login to continue to checkout.');
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 300);
+    return;
+  }
+
+  // User IS logged in → proceed to checkout
   localStorage.setItem('cart', JSON.stringify(cart));
   localStorage.setItem('checkoutCart', JSON.stringify(cart));
-  
+
   closeCart();
-  
+
   setTimeout(() => {
     window.location.href = 'checkout.html';
   }, 300);
 }
+
 
 // ===================================
 // TOAST
@@ -348,6 +382,7 @@ function showToast(msg) {
   toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+
 // ===================================
 // NEWSLETTER
 // ===================================
@@ -360,6 +395,7 @@ function subscribe() {
   showToast('Subscribed! Check your inbox for 10% off 🎉');
   document.getElementById('emailInput').value = '';
 }
+
 
 // ===================================
 // COUNTDOWN
@@ -381,9 +417,259 @@ function startCountdown() {
   }, 1000);
 }
 
+
 // ===================================
 // UTILITY
 // ===================================
 function toggleWish(btn) {
   btn.classList.toggle('active');
+}
+
+/* =============================================
+   MOBILE MENU — toggle nav actions drawer
+============================================= */
+document.addEventListener('DOMContentLoaded', function () {
+  const toggle    = document.getElementById('mobileMenuToggle');
+  const navActions = document.getElementById('navActions');
+  if (!toggle || !navActions) return;
+
+  function openMenu() {
+    navActions.classList.add('active');
+    toggle.classList.add('active');
+    toggle.setAttribute('aria-expanded', 'true');
+    const icon = toggle.querySelector('i');
+    icon.classList.replace('ti-menu-2', 'ti-x');
+  }
+
+  function closeMenu() {
+    navActions.classList.remove('active');
+    toggle.classList.remove('active');
+    toggle.setAttribute('aria-expanded', 'false');
+    const icon = toggle.querySelector('i');
+    icon.classList.replace('ti-x', 'ti-menu-2');
+  }
+
+  toggle.addEventListener('click', function () {
+    navActions.classList.contains('active') ? closeMenu() : openMenu();
+  });
+
+  // Close when a nav button is tapped on mobile
+  navActions.querySelectorAll('.nav-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (window.innerWidth <= 767) closeMenu();
+    });
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && navActions.classList.contains('active')) closeMenu();
+  });
+
+  // Close on resize past mobile breakpoint
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 767) closeMenu();
+  });
+
+  // Close when clicking outside the nav
+  document.addEventListener('click', function (e) {
+    if (
+      navActions.classList.contains('active') &&
+      !navActions.contains(e.target) &&
+      !toggle.contains(e.target)
+    ) {
+      closeMenu();
+    }
+  });
+});
+
+// Update navbar based on login status + bind logout
+document.addEventListener('DOMContentLoaded', function() {
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  
+  // Check if logged in
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  
+  if (isLoggedIn) {
+    // Show logout button, hide login button
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (logoutBtn) {
+      logoutBtn.style.display = 'inline-flex';
+      
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const userName = user.name || user.email || 'User';
+      logoutBtn.innerHTML = `<i class="ti ti-logout"></i><span class="nav-text">Logout, ${userName}</span>`;
+    }
+    
+    console.log('✅ Logged in - showing logout button');
+  } else {
+    // Show login button, hide logout button
+    if (loginBtn) loginBtn.style.display = 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    
+    console.log('👤 Not logged in - showing login button');
+  }
+  
+  // Bind logout button click
+  if (logoutBtn) {
+    logoutBtn.onclick = function() {
+      console.log('🔴 Logout button clicked');
+      
+      if (confirm('Are you sure you want to logout?')) {
+        logout();
+      }
+    };
+  }
+});
+
+// Update navbar based on login status + bind logout
+document.addEventListener('DOMContentLoaded', function() {
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  
+  // Check if logged in
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  
+  console.log('🔍 Navbar check:');
+  console.log('  isLoggedIn:', isLoggedIn);
+  console.log('  loginBtn:', loginBtn);
+  console.log('  logoutBtn:', logoutBtn);
+  
+  if (isLoggedIn) {
+    // Logged in: Show logout button, hide login button
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (logoutBtn) {
+      logoutBtn.style.display = 'inline-flex';
+      
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const userName = user.name || user.email || 'User';
+      logoutBtn.innerHTML = `<i class="ti ti-logout"></i><span class="nav-text">Logout, ${userName}</span>`;
+      
+      console.log('✅ Logged in - showing: Logout, ' + userName);
+    }
+  } else {
+    // Not logged in: Show login button, hide logout button
+    if (loginBtn) loginBtn.style.display = 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    
+    console.log('👤 Not logged in - showing: Login');
+  }
+  
+  // Bind logout button click
+  if (logoutBtn) {
+    logoutBtn.onclick = function() {
+      console.log('🔴 Logout button clicked');
+      
+      if (confirm('Are you sure you want to logout?')) {
+        // Call logout function
+        if (typeof logout === 'function') {
+          logout();
+          
+          // After logout, show login button again
+          setTimeout(function() {
+            if (loginBtn) loginBtn.style.display = 'inline-flex';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            console.log('✅ After logout - showing: Login');
+          }, 100);
+        }
+      }
+    };
+  }
+});
+// ============================================
+// ADMIN FEATURE - Show admin button & load products
+// ============================================
+
+// Check if current user is admin and show admin button
+function checkAdminAndShowButton() {
+  const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  const adminBtn = document.getElementById('adminBtn');
+  
+  if (user && user.isAdmin) {
+    // Admin is logged in - show admin button
+    if (adminBtn) adminBtn.style.display = 'flex';
+  } else {
+    // Not admin - hide admin button
+    if (adminBtn) adminBtn.style.display = 'none';
+  }
+}
+
+// Load admin-added products and display on homepage
+function loadAdminProducts() {
+  const adminProducts = JSON.parse(localStorage.getItem('adminProducts') || '[]');
+  const productsGrid = document.getElementById('productsGrid');
+  
+  if (!productsGrid) return;
+  
+  if (adminProducts.length === 0) {
+    // No admin products, keep existing products
+    return;
+  }
+  
+  // Add admin products to existing products
+  const allProducts = [...window.products, ...adminProducts];
+  
+  // Render all products
+  productsGrid.innerHTML = allProducts.map(product => createProductCard(product)).join('');
+  
+  // Re-attach event listeners for add to cart buttons
+  attachAddToCartEvents();
+}
+
+// Create product card HTML
+function createProductCard(product) {
+  const discount = Math.round((1 - product.price / product.originalPrice) * 100);
+  
+  return `
+    <div class="prod-card" data-category="${product.category}" data-id="${product.id}">
+      <div class="prod-img-wrap">
+        <div class="prod-img">${product.image}</div>
+        <div class="prod-badge">-${discount}%</div>
+        <button class="prod-quick-btn" data-id="${product.id}" aria-label="Quick view">
+          <i class="ti ti-eye"></i>
+        </button>
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">${product.category}</div>
+        <h3 class="prod-name">${product.name}</h3>
+        <p class="prod-desc">${product.description}</p>
+        <div class="prod-rating">
+          <i class="ti ti-star filled"></i>
+          <span>${product.rating}</span>
+          <span class="prod-reviews">(${Math.floor(product.stock * 0.1)})</span>
+        </div>
+        <div class="prod-prices">
+          <span class="prod-price">₹${product.price}</span>
+          <span class="prod-old-price">₹${product.originalPrice}</span>
+        </div>
+        <button class="prod-add-btn" data-id="${product.id}" aria-label="Add to cart">
+          <i class="ti ti-plus"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// Re-attach add to cart event listeners
+function attachAddToCartEvents() {
+  const addBtns = document.querySelectorAll('.prod-add-btn');
+  addBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.dataset.id;
+      addToCart(productId);
+    });
+  });
+}
+
+// Initialize admin features on page load
+function initAdminFeatures() {
+  checkAdminAndShowButton();
+  loadAdminProducts();
+}
+
+// Call when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAdminFeatures);
+} else {
+  initAdminFeatures();
 }

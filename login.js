@@ -29,17 +29,37 @@ function login() {
     if (data.token) {
       alert("Login successful");
 
-      // ✅ SAVE TOKEN + USER INFO
+      // ✅ SAVE TOKEN
       localStorage.setItem("token", data.token);
       console.log("Token saved:", data.token);
 
-      // Save user info for navbar
+      // 🔥 NEW: Set isLoggedIn and userToken
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userToken", data.token);
+      console.log("isLoggedIn set to true");
+      console.log("userToken set:", data.token);
+
+      // ✅ SAVE USER INFO (FIXED - check if data.user exists)
       if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user));
         console.log("User saved:", data.user);
+      } else if (data.email) {
+        // If API returns email instead of user object
+        localStorage.setItem("user", JSON.stringify({ 
+          name: data.name || email, 
+          email: data.email 
+        }));
+        console.log("User saved from response:", { name: data.name || email, email: data.email });
+      } else {
+        // Create user object from token/email
+        localStorage.setItem("user", JSON.stringify({ 
+          name: email.split('@')[0], 
+          email: email 
+        }));
+        console.log("User created from email:", { name: email.split('@')[0], email: email });
       }
 
-      // 🔥 REDIRECT TO HOME (FIXED PATH)
+      // 🔥 REDIRECT TO HOME
       console.log("Redirecting to home...");
       window.location.href = "index.html";
     } else {
@@ -53,79 +73,59 @@ function login() {
 }
 
 // ===================================
-// UPDATE NAVBAR ON HOME PAGE
+// LOGOUT FUNCTION (FIXED - on HOME PAGE)
 // ===================================
-function updateLoginUI() {
+function logout() {
+  console.log("🔴 Logout clicked - clearing all data");
+  
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("userToken");
+  
+  console.log("✅ All data cleared:");
+  console.log("  isLoggedIn:", localStorage.getItem("isLoggedIn"));
+  console.log("  userToken:", localStorage.getItem("userToken"));
+  console.log("  user:", localStorage.getItem("user"));
+  console.log("  token:", localStorage.getItem("token"));
+  
+  alert("Logged out successfully!");
+  
+  // Update navbar
+  if (typeof updateLoginUI === 'function') {
+    updateLoginUI();
+  }
+  
+}
+
+document.addEventListener('DOMContentLoaded', function() {
   const loginBtn = document.getElementById('loginBtn');
   
-  if (!loginBtn) return;
-
-  const user = localStorage.getItem("user");
-  const token = localStorage.getItem("token");
-
-  if (user && token) {
-    const userData = JSON.parse(user);
-    const userName = userData.name || userData.email || "User";
+  if (loginBtn) {
+    console.log('✅ Found loginBtn, binding logout function');
     
-    console.log("=== Updating Navbar ===");
-    console.log("User:", userName);
-    
-    loginBtn.innerHTML = `<i class="ti ti-user"></i> Welcome, ${userName}`;
-    loginBtn.classList.remove('btn-login');
-    loginBtn.href = '#';
-    loginBtn.style.cursor = 'pointer';
-
     loginBtn.onclick = function(e) {
-      e.preventDefault();
+      e.preventDefault(); // Stop going to login.html
       
-      if (confirm('Are you sure you want to logout?')) {
-        logout();
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        // Logged in → show logout confirm
+        console.log('🔴 User is logged in, showing logout confirm');
+        
+        if (confirm('Are you sure you want to logout?')) {
+          console.log('✅ User confirmed logout');
+          logout();
+        }
+      } else {
+        // Not logged in → go to login page
+        console.log('👤 User not logged in, going to login page');
+        window.location.href = 'login.html';
       }
     };
   } else {
-    loginBtn.innerHTML = `<i class="ti ti-user"></i> Login`;
-    loginBtn.classList.add('btn-login');
-    loginBtn.href = '../html/login.html';
-    loginBtn.style.cursor = 'pointer';
-    loginBtn.onclick = null;
+    console.log('❌ loginBtn NOT found!');
   }
-}
-
-// ===================================
-// LOGOUT FUNCTION
-// ===================================
-function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  updateLoginUI();
-  alert("Logged out successfully!");
-}
-
-// ===================================
-// RUN ON PAGE LOAD
-// ===================================
-window.addEventListener('DOMContentLoaded', function() {
-  updateLoginUI();
 });
 
-if (data.token) {
-  alert("Login successful");
-  localStorage.setItem("token", data.token);
-  
-  // Decode token to get user info
-  const base64Url = data.token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-  
-  const userData = JSON.parse(jsonPayload);
-  localStorage.setItem("user", JSON.stringify(userData));
-  
-  window.location.href = "index.html";
-}
-console.log("EMAIL RECEIVED:", email);
 
-db.query(sql, [email], async (err, result) => {
-  console.log("QUERY RESULT:", result);
-});
+
+  

@@ -1,11 +1,44 @@
+// ===================================
+// CHECKOUT LOGIN GUARD (FIXED - checks token only)
+// ===================================
+(function() {
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const userToken = localStorage.getItem('userToken');
+  
+  console.log('🔍 Checkout Login Guard Check:');
+  console.log('  isLoggedIn:', isLoggedIn);
+  console.log('  userToken:', userToken);
+
+  // Check: isLoggedIn must be 'true' AND userToken must exist
+  if (isLoggedIn !== 'true' || !userToken) {
+    console.log('🚫 Checkout blocked: User not logged in');
+    
+    // Clear stale data
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('checkoutCart');
+    
+    alert('Please login to continue to checkout.');
+    window.location.replace('login.html');
+    throw new Error('Redirecting to login');
+  }
+
+  console.log('✅ Checkout allowed: User is logged in');
+})();
+
+
 let cart = [];
+
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("=== CHECKOUT PAGE LOADED ===");
 
+
   cart = JSON.parse(localStorage.getItem("checkoutCart") || localStorage.getItem("cart") || "[]");
 
+
   console.log("Cart loaded:", cart);
+
 
   if (cart.length === 0) {
     showEmptyCart();
@@ -13,15 +46,18 @@ document.addEventListener("DOMContentLoaded", function () {
     renderCheckout();
   }
 
+
   const placeOrderBtn = document.getElementById("placeOrderBtn");
   if (placeOrderBtn) {
     placeOrderBtn.addEventListener("click", placeOrder);
   }
 });
 
+
 function showEmptyCart() {
   const container = document.querySelector(".checkout-grid");
   if (!container) return;
+
 
   container.innerHTML = `
     <div class="empty-cart-msg" style="grid-column: 1/-1;">
@@ -35,9 +71,11 @@ function showEmptyCart() {
   `;
 }
 
+
 function renderCheckout() {
   const itemsEl = document.getElementById("checkoutItems");
   if (!itemsEl) return;
+
 
   itemsEl.innerHTML = cart.map((item, index) => `
     <div class="checkout-item">
@@ -59,8 +97,10 @@ function renderCheckout() {
     </div>
   `).join("");
 
+
   updateTotals();
 }
+
 
 function updateTotals() {
   const subtotal = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
@@ -68,16 +108,19 @@ function updateTotals() {
   const tax = Math.round(subtotal * 0.18);
   const total = subtotal + shipping + tax;
 
+
   const subtotalEl = document.getElementById("subtotal");
   const shippingEl = document.getElementById("shipping");
   const taxEl = document.getElementById("tax");
   const totalEl = document.getElementById("total");
+
 
   if (subtotalEl) subtotalEl.textContent = "₹" + subtotal.toLocaleString();
   if (shippingEl) shippingEl.textContent = shipping === 0 ? "FREE" : "₹" + shipping.toLocaleString();
   if (taxEl) taxEl.textContent = "₹" + tax.toLocaleString();
   if (totalEl) totalEl.textContent = "₹" + total.toLocaleString();
 }
+
 
 function calculateTotals() {
   const subtotal = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 1)), 0);
@@ -87,73 +130,136 @@ function calculateTotals() {
   return { subtotal, shipping, tax, total };
 }
 
+
 function changeQty(index, delta) {
   cart[index].qty = Math.max(1, (cart[index].qty || 1) + delta);
   saveCart();
   renderCheckout();
 }
 
+
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
   localStorage.setItem("checkoutCart", JSON.stringify(cart));
 }
 
+
 function showToast(msg) {
   const toast = document.querySelector(".toast");
   const toastMsg = document.getElementById("toastMsg");
+
 
   if (!toast || !toastMsg) {
     alert(msg);
     return;
   }
 
+
   toastMsg.textContent = msg;
   toast.style.display = "block";
+
 
   setTimeout(() => {
     toast.style.display = "none";
   }, 3000);
 }
 
-function placeOrder() {
-  const name = document.getElementById("name")?.value.trim() || "";
-  const email = document.getElementById("email")?.value.trim() || "";
-  const phone = document.getElementById("phone")?.value.trim() || "";
-  const address = document.getElementById("address")?.value.trim() || "";
-  const city = document.getElementById("city")?.value.trim() || "";
-  const pincode = document.getElementById("pincode")?.value.trim() || "";
+{
 
-  console.log({ name, email, phone, address, city, pincode });
+  function placeOrder() {
 
-  if (!name || !email || !phone || !address || !city || !pincode) {
-    showToast("Please fill all fields");
-    return;
-  }
+const name = document.getElementById("name")?.value.trim() || "";
+const email = document.getElementById("email")?.value.trim() || "";
+const phone = document.getElementById("phone")?.value.trim() || "";
+const address = document.getElementById("address")?.value.trim() || "";
+const city = document.getElementById("city")?.value.trim() || "";
+const pincode = document.getElementById("pincode")?.value.trim() || "";
 
-  const customer = { name, email, phone, address, city, pincode };
-  const totals = calculateTotals();
-  const orderId = "ORD" + Date.now();
+console.log({
+name,
+email,
+phone,
+address,
+city,
+pincode
+});
 
-  const checkoutData = {
-    orderId,
-    customer,
-    cart,
-    totals,
-    createdAt: new Date().toISOString()
-  };
+if (!name || !email || !phone || !address || !city || !pincode) {
+showToast("Please fill all fields");
+return;
+}
 
-  try {
-    localStorage.setItem("latestOrderId", orderId);
-    localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
-    localStorage.removeItem("checkoutCart");
+if (!cart || cart.length === 0) {
+showToast("Cart is empty");
+return;
+}
 
-    showToast("Order placed successfully!");
+const customer = {
+name,
+email,
+phone,
+address,
+city,
+pincode
+};
 
-    setTimeout(() => {
+const totals = calculateTotals();
+
+const orderId = "ORD" + Date.now();
+
+const checkoutData = {
+orderId,
+customer,
+cart,
+totals,
+createdAt: new Date().toISOString()
+};
+
+console.log("Saving checkoutData:", checkoutData);
+
+try {
+
+localStorage.setItem(
+  "latestOrderId",
+  orderId
+);
+
+localStorage.setItem(
+  "checkoutData",
+  JSON.stringify(checkoutData)
+);
+
+console.log(
+  "Saved checkoutData:",
+  localStorage.getItem("checkoutData")
+);
+
+showToast("Order placed successfully!");
+
+setTimeout(() => {
+  window.location.href = "payment.html";
+}, 1000);
+```
+
+} catch (error) {
+
+```
+console.error(
+  "localStorage save failed:",
+  error
+);
+
+showToast(
+  "Could not save checkout details"
+);
+
+  setTimeout(() => {
       window.location.href = "payment.html";
     }, 1200);
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("localStorage save failed:", error);
     showToast("Could not save checkout details");
   }
+}
 }
